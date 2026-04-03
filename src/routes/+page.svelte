@@ -1,7 +1,21 @@
 <script lang="ts">
 	import heroVideo from "$lib/assets/nuchy2.mp4";
 
+	let innerWidth = $state(1440);
+	let innerHeight = $state(900);
+
 	const overlayLetters = ["N", "U", "C", "H", "Y"];
+	const overlayColor = "#fff";
+	const maskOpacity = 0.95;
+	const maskFontFamily = "'Chango', sans-serif";
+	const maskFontSize = 13.4;
+	const maskStartY = 16.4;
+	const maskLetterStep = 15.7;
+
+	const viewBoxWidth = $derived(
+		(innerWidth / Math.max(innerHeight, 1)) * 100,
+	);
+	const overlayWidth = $derived(viewBoxWidth * 0.33);
 </script>
 
 <svelte:head>
@@ -13,10 +27,12 @@
 		crossorigin="anonymous"
 	/>
 	<link
-		href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Chango&display=swap"
 		rel="stylesheet"
 	/>
 </svelte:head>
+
+<svelte:window bind:innerWidth bind:innerHeight />
 
 <section class="hero">
 	<video
@@ -33,8 +49,7 @@
 
 	<svg
 		class="hero-overlay"
-		viewBox="0 0 100 100"
-		preserveAspectRatio="none"
+		viewBox={`0 0 ${viewBoxWidth} 100`}
 		aria-hidden="true"
 	>
 		<defs>
@@ -44,22 +59,29 @@
 				maskContentUnits="userSpaceOnUse"
 				x="0"
 				y="0"
-				width="100"
+				width={viewBoxWidth}
 				height="100"
 			>
-				<rect x="0" y="0" width="100" height="100" fill="white" />
+				<rect
+					x="0"
+					y="0"
+					width={viewBoxWidth}
+					height="100"
+					fill="white"
+				/>
 				<text
-					x="33.5"
-					y="12.5"
+					x={overlayWidth}
 					fill="black"
-					font-family="'Cormorant Garamond', serif"
-					font-size="12.5"
-					font-weight="700"
-					letter-spacing="0.12em"
+					font-family={maskFontFamily}
+					font-size={maskFontSize}
+					font-weight="400"
+					letter-spacing="0"
 					text-anchor="middle"
 				>
 					{#each overlayLetters as letter, index}
-						<tspan x="33.5" dy={index === 0 ? "0" : "0.92em"}
+						<tspan
+							x={overlayWidth}
+							y={maskStartY + index * maskLetterStep}
 							>{letter}</tspan
 						>
 					{/each}
@@ -70,12 +92,33 @@
 		<rect
 			x="0"
 			y="0"
-			width="33"
+			width={overlayWidth}
 			height="100"
-			fill="#171614"
-			fill-opacity="0.92"
+			fill={overlayColor}
+			fill-opacity={maskOpacity}
 			mask="url(#hero-overlay-mask)"
 		/>
+
+		<text
+			x={overlayWidth}
+			fill="none"
+			stroke={overlayColor}
+			stroke-opacity={maskOpacity}
+			stroke-width="0.5"
+			stroke-linejoin="round"
+			vector-effect="non-scaling-stroke"
+			font-family={maskFontFamily}
+			font-size={maskFontSize}
+			font-weight="400"
+			letter-spacing="0"
+			text-anchor="middle"
+		>
+			{#each overlayLetters as letter, index}
+				<tspan x={overlayWidth} y={maskStartY + index * maskLetterStep}
+					>{letter}</tspan
+				>
+			{/each}
+		</text>
 	</svg>
 </section>
 
