@@ -5,17 +5,20 @@
 	let innerHeight = $state(900);
 
 	const overlayLetters = ["N", "U", "C", "H", "Y"];
-	const overlayColor = "#fff";
+	const overlayColor = "#0a0a0a";
 	const maskOpacity = 0.95;
-	const maskFontFamily = "'Chango', sans-serif";
-	const maskFontSize = 13.4;
-	const maskStartY = 16.4;
-	const maskLetterStep = 15.7;
+	const maskFontFamily = "'Bevan', serif";
+	const strokeWidth = 0.2;
+	const maskFontSize = 13.8;
+	const maskStartY = 23.8;
+	const maskLetterStep = 15.6;
 
 	const viewBoxWidth = $derived(
 		(innerWidth / Math.max(innerHeight, 1)) * 100,
 	);
-	const overlayWidth = $derived(viewBoxWidth * 0.33);
+	const overlayWidth = $derived(viewBoxWidth * 0.5);
+	const lettersOffset = $derived(maskFontSize * -0.05);
+	const lettersX = $derived(overlayWidth + lettersOffset);
 </script>
 
 <svelte:head>
@@ -27,7 +30,7 @@
 		crossorigin="anonymous"
 	/>
 	<link
-		href="https://fonts.googleapis.com/css2?family=Chango&display=swap"
+		href="https://fonts.googleapis.com/css2?family=Bevan&display=swap"
 		rel="stylesheet"
 	/>
 </svelte:head>
@@ -70,7 +73,7 @@
 					fill="white"
 				/>
 				<text
-					x={overlayWidth}
+					x={lettersX}
 					fill="black"
 					font-family={maskFontFamily}
 					font-size={maskFontSize}
@@ -80,7 +83,7 @@
 				>
 					{#each overlayLetters as letter, index}
 						<tspan
-							x={overlayWidth}
+							x={lettersX}
 							y={maskStartY + index * maskLetterStep}
 							>{letter}</tspan
 						>
@@ -100,11 +103,11 @@
 		/>
 
 		<text
-			x={overlayWidth}
+			x={lettersX}
 			fill="none"
 			stroke={overlayColor}
 			stroke-opacity={maskOpacity}
-			stroke-width="0.5"
+			stroke-width={strokeWidth}
 			stroke-linejoin="round"
 			vector-effect="non-scaling-stroke"
 			font-family={maskFontFamily}
@@ -114,7 +117,7 @@
 			text-anchor="middle"
 		>
 			{#each overlayLetters as letter, index}
-				<tspan x={overlayWidth} y={maskStartY + index * maskLetterStep}
+				<tspan x={lettersX} y={maskStartY + index * maskLetterStep}
 					>{letter}</tspan
 				>
 			{/each}
