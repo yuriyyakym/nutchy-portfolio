@@ -4,23 +4,21 @@
 	let innerWidth = $state(1440);
 	let innerHeight = $state(900);
 
-	const overlayLetters = ["N", "U", "C", "H", "Y"];
-	const overlayColor = "#0a0a0a";
+	const overlayWord = "NUCHY";
+	const overlayColor = "#202020";
 	const maskOpacity = 1;
 	const maskFontFamily = "'Bevan', serif";
-	const strokeWidth = 0.2;
-	const maskFontSize = 15.8;
-	const maskStartY = 23.8;
-	const maskLetterStep = 15.6;
+	const strokeWidth = 6;
+	const maskFontSize = 10;
+	const overlayHeight = 25;
 
 	const viewBoxWidth = $derived(
 		(innerWidth / Math.max(innerHeight, 1)) * 100,
 	);
-	const overlayWidth = $derived(viewBoxWidth * 0.45);
-	// const lettersOffset = $derived(maskFontSize * -0.8);
-	// const lettersOffset = $derived(maskFontSize * -0.44);
-	const lettersOffset = $derived(maskFontSize * -0.05);
-	const lettersX = $derived(overlayWidth + lettersOffset);
+	const overlayY = $derived(100 - overlayHeight);
+	const wordX = $derived(viewBoxWidth * 0.5);
+	const wordOffset = $derived(maskFontSize * 0.6);
+	const wordY = $derived(overlayY + wordOffset);
 </script>
 
 <svelte:head>
@@ -75,37 +73,34 @@
 					fill="white"
 				/>
 				<text
-					x={lettersX}
+					x={wordX}
+					y={wordY}
 					fill="black"
 					font-family={maskFontFamily}
 					font-size={maskFontSize}
 					font-weight="400"
 					letter-spacing="0"
+					dominant-baseline="middle"
 					text-anchor="middle"
 				>
-					{#each overlayLetters as letter, index}
-						<tspan
-							x={lettersX}
-							y={maskStartY + index * maskLetterStep}
-							>{letter}</tspan
-						>
-					{/each}
+					{overlayWord}
 				</text>
 			</mask>
 		</defs>
 
 		<rect
 			x="0"
-			y="0"
-			width={overlayWidth}
-			height="100"
+			y={overlayY}
+			width={viewBoxWidth}
+			height={overlayHeight}
 			fill={overlayColor}
 			fill-opacity={maskOpacity}
 			mask="url(#hero-overlay-mask)"
 		/>
 
 		<text
-			x={lettersX}
+			x={wordX}
+			y={wordY}
 			fill="none"
 			stroke={overlayColor}
 			stroke-opacity={maskOpacity}
@@ -116,13 +111,10 @@
 			font-size={maskFontSize}
 			font-weight="400"
 			letter-spacing="0"
+			dominant-baseline="middle"
 			text-anchor="middle"
 		>
-			{#each overlayLetters as letter, index}
-				<tspan x={lettersX} y={maskStartY + index * maskLetterStep}
-					>{letter}</tspan
-				>
-			{/each}
+			{overlayWord}
 		</text>
 	</svg>
 </section>
