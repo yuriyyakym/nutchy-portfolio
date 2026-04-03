@@ -6,17 +6,19 @@
 
 	const overlayLetters = ["N", "U", "C", "H", "Y"];
 	const overlayColor = "#0a0a0a";
-	const maskOpacity = 0.95;
+	const maskOpacity = 1;
 	const maskFontFamily = "'Bevan', serif";
 	const strokeWidth = 0.2;
-	const maskFontSize = 13.8;
+	const maskFontSize = 15.8;
 	const maskStartY = 23.8;
 	const maskLetterStep = 15.6;
 
 	const viewBoxWidth = $derived(
 		(innerWidth / Math.max(innerHeight, 1)) * 100,
 	);
-	const overlayWidth = $derived(viewBoxWidth * 0.5);
+	const overlayWidth = $derived(viewBoxWidth * 0.45);
+	// const lettersOffset = $derived(maskFontSize * -0.8);
+	// const lettersOffset = $derived(maskFontSize * -0.44);
 	const lettersOffset = $derived(maskFontSize * -0.05);
 	const lettersX = $derived(overlayWidth + lettersOffset);
 </script>
